@@ -1,0 +1,55 @@
+.signupCard {
+    width: 30rem;
+    height: 40rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px 40px;
+}
+
+.signupCard h1 {
+    align-self: flex-start;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 0;
+    gap: .5rem;
+    align-items: flex-start;
+}
+
+form label {
+    margin-top: 1rem;
+}
+
+form input {
+    width: 15rem;
+    height: 1.5rem;
+    flex-grow: 0;
+    position: relative;
+}
+
+
+
+.hide {
+    display: none;
+}
+
+.offscreen {
+    position: absolute;
+    top: -100%;
+}
+
+form p {
+    position: relative;
+    background: #404040;
+    padding: .5rem;
+    text-align: left;
+    border-radius: .5rem;
+    font-size: .8rem;
+}   
+
+button {
+    margin-top: 2rem;
+}
