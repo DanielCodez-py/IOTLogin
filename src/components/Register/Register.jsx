@@ -14,7 +14,7 @@ const REGISTER_URL =  "https://industrialiot.onrender.com/api/register"
 // const REGISTER_URL =  "http://serveo.net:4962/api/register";
 
 
-export default function Register() {
+export default function Register({handleRegistration}) {
   const userRef = useRef();
   const errRef = useRef();
 
@@ -109,7 +109,7 @@ export default function Register() {
         <section >
           <h1>Success!</h1>
           <p>
-            <a href="#">Sign in</a>
+            <a href="#" onClick={handleRegistration}>Sign in</a>
           </p>
         </section>
       ) : (
@@ -263,6 +263,7 @@ export default function Register() {
               Sign up
             </button>
           </form>
+          <p>Already signed up? <a href='#' onClick={handleRegistration}>Login</a></p>
         </section>
       )}
     </>
