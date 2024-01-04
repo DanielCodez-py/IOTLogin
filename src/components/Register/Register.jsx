@@ -1,4 +1,5 @@
 import axios from '../../api/axios';
+import VerifyEmail from '../VerifyEmail/VerifyEmail';
 import "./Register.css";
 import { useRef, useState, useEffect } from "react";
 import {
@@ -14,7 +15,7 @@ const REGISTER_URL =  "https://industrialiot.onrender.com/api/register"
 // const REGISTER_URL =  "http://serveo.net:4962/api/register";
 
 
-export default function Register({handleRegistration}) {
+export default function Register({handleSuccess, handleVerification}) {
   const userRef = useRef();
   const errRef = useRef();
 
@@ -88,7 +89,7 @@ export default function Register({handleRegistration}) {
         // console.log(response.data);
         // console.log(response.accessToken);
         console.log(JSON.stringify(response));
-        setSuccess(true)
+        handleSuccess();
     } catch(err) {
         if(!err?.response) {
           setErrMsg("No server response");
@@ -106,12 +107,7 @@ export default function Register({handleRegistration}) {
   return (
     <>
       {success ? (
-        <section >
-          <h1>Success!</h1>
-          <p>
-            <a href="#" onClick={handleRegistration}>Sign in</a>
-          </p>
-        </section>
+          <VerifyEmail userEmail={userEmail}/>
       ) : (
         <section className="signupCard">
           <p
@@ -263,7 +259,7 @@ export default function Register({handleRegistration}) {
               Sign up
             </button>
           </form>
-          <p>Already signed up? <a href='#' onClick={handleRegistration}>Login</a></p>
+          <p>Already signed up? <a href='#' onClick={handleVerification}>Login</a></p>
         </section>
       )}
     </>

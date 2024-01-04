@@ -22,10 +22,7 @@ export default function Login({handleRegistration}) {
     
     const [errMsg, setErrMsg] = useState("");
     const [success, setSuccess] = useState("");
-    
-    // useEffect(() => {
-    //     userRef.current.focus();
-    // }, []);
+
     
     useEffect(() => {
         const result = EMAIL_REGEX.test(userEmail);
@@ -60,13 +57,14 @@ export default function Login({handleRegistration}) {
             if(!err?.response) {
             setErrMsg("No server response");
             } else if(err.response?.status === 400) {
-                setErrMsg("Incorrect credentials");
+                setErrMsg("Bad request");
+                // setErrMsg(err.response["msg"]);
             } else if (err.response?.status === 403) {
                 setErrMsg("Email verification not complete");
             } else if (err.response?.status === 500) {
-                setErrMsg("Could not login");
+                setErrMsg(err.response.error);
             } else {
-                setErrMsg("Registration failed")
+                setErrMsg(err.response["Details"])
             }
             errRef.current.focus();
         }
