@@ -15,7 +15,7 @@ const REGISTER_URL =  "https://industrialiot.onrender.com/api/register"
 // const REGISTER_URL =  "http://serveo.net:4962/api/register";
 
 
-export default function Register({handleSuccess, handleVerification}) {
+export default function Register({handleLogin, setToVerify, handleUserEmail}) {
   const userRef = useRef();
   const errRef = useRef();
 
@@ -83,13 +83,13 @@ export default function Register({handleSuccess, handleVerification}) {
         {email: userEmail, username: user, password: pwd},
         {
           headers: {"Content-Type": "application/json"},
-          // withCredentials: true
         }
         );
         // console.log(response.data);
         // console.log(response.accessToken);
         console.log(JSON.stringify(response));
-        handleSuccess();
+        setToVerify();
+        handleUserEmail(userEmail)
     } catch(err) {
         if(!err?.response) {
           setErrMsg("No server response");
@@ -106,162 +106,158 @@ export default function Register({handleSuccess, handleVerification}) {
 
   return (
     <>
-      {success ? (
-          <VerifyEmail userEmail={userEmail}/>
-      ) : (
-        <section className="signupCard">
+      <section className="signupCard">
+        <p
+          ref={errRef}
+          className={errMsg ? "errmsg" : "offscreen"}
+          aria-live="assertive"
+        >
+          {errMsg}
+        </p>
+        <h1>Register</h1>
+        <form>
+          <label htmlFor="username">
+            Username:
+            <span className={validName ? "valid" : "hide"}>
+              <CheckCircleFill />
+            </span>
+            <span className={validName || !user ? "hide" : "invalid"}>
+              <XCircleFill />
+            </span>
+          </label>
+          <input
+            type="text"
+            id="username"
+            ref={userRef}
+            autoComplete="off"
+            onChange={(e) => setUser(e.target.value)}
+            required
+            aria-invalid={validName ? "false" : "true"}
+            aria-describedby="uidnote"
+            onFocus={() => setUserFocus(true)}
+            onBlur={() => setUserFocus(false)}
+          />
+
           <p
-            ref={errRef}
-            className={errMsg ? "errmsg" : "offscreen"}
-            aria-live="assertive"
+            id="uidnote"
+            className={
+              userFocus && user && !validName ? "instructions" : "offscreen"
+            }
           >
-            {errMsg}
+            <InfoCircle />
+            4 to 24 characters. <br />
+            Must begin with a letter. <br />
+            Letters, numbers, hyphens, underscores allowed.
           </p>
-          <h1>Register</h1>
-          <form>
-            <label htmlFor="username">
-              Username:
-              <span className={validName ? "valid" : "hide"}>
-                <CheckCircleFill />
-              </span>
-              <span className={validName || !user ? "hide" : "invalid"}>
-                <XCircleFill />
-              </span>
-            </label>
-            <input
-              type="text"
-              id="username"
-              ref={userRef}
-              autoComplete="off"
-              onChange={(e) => setUser(e.target.value)}
-              required
-              aria-invalid={validName ? "false" : "true"}
-              aria-describedby="uidnote"
-              onFocus={() => setUserFocus(true)}
-              onBlur={() => setUserFocus(false)}
-            />
 
-            <p
-              id="uidnote"
-              className={
-                userFocus && user && !validName ? "instructions" : "offscreen"
-              }
-            >
-              <InfoCircle />
-              4 to 24 characters. <br />
-              Must begin with a letter. <br />
-              Letters, numbers, hyphens, underscores allowed.
-            </p>
+          <label htmlFor="email">
+            Email:
+            <span className={validEmail ? "valid" : "hide"}>
+              <CheckCircleFill />
+            </span>
+            <span className={validEmail || !userEmail ? "hide" : "invalid"}>
+              <XCircleFill />
+            </span>
+          </label>
+          <input
+            type="email"
+            id="email"
+            autoComplete="off"
+            onChange={(e) => setUserEmail(e.target.value) }
+            required
+            aria-invalid={validEmail ? "false" : "true"}
+            aria-describedby="emailidnote"
+            onFocus={() => setEmailFocus(true)}
+            onBlur={() => setEmailFocus(false)}
+          />
 
-            <label htmlFor="email">
-              Email:
-              <span className={validEmail ? "valid" : "hide"}>
-                <CheckCircleFill />
-              </span>
-              <span className={validEmail || !userEmail ? "hide" : "invalid"}>
-                <XCircleFill />
-              </span>
-            </label>
-            <input
-              type="email"
-              id="email"
-              autoComplete="off"
-              onChange={(e) => setUserEmail(e.target.value)}
-              required
-              aria-invalid={validEmail ? "false" : "true"}
-              aria-describedby="emailidnote"
-              onFocus={() => setEmailFocus(true)}
-              onBlur={() => setEmailFocus(false)}
-            />
-
-            <p
-              id="emailidnote"
-              className={
-                emailFocus && userEmail && !validEmail ? "instructions" : "offscreen"
-              }
-            >
-              <InfoCircle />
-              Must be a valid email address with an <br />
-              @ symbol followed by a valid domain name
-            </p>
+          <p
+            id="emailidnote"
+            className={
+              emailFocus && userEmail && !validEmail ? "instructions" : "offscreen"
+            }
+          >
+            <InfoCircle />
+            Must be a valid email address with an <br />
+            @ symbol followed by a valid domain name
+          </p>
 
 
-            <label htmlFor="password">
-              Password:
-              <span className={validPwd ? "valid" : "hide"}>
-                <CheckCircleFill />
-              </span>
-              <span className={validPwd || !pwd ? "hide" : "invalid"}>
-                <XCircleFill />
-              </span>
-            </label>
-            <input
-              type="password"
-              id="password"
-              onChange={(e) => setPwd(e.target.value)}
-              required
-              aria-invalid={validPwd ? "false" : "true"}
-              aria-describedby="pwdnote"
-              onFocus={() => setMatchFocus(true)}
-              onBlur={() => setMatchFocus(false)}
-            />
+          <label htmlFor="password">
+            Password:
+            <span className={validPwd ? "valid" : "hide"}>
+              <CheckCircleFill />
+            </span>
+            <span className={validPwd || !pwd ? "hide" : "invalid"}>
+              <XCircleFill />
+            </span>
+          </label>
+          <input
+            type="password"
+            id="password"
+            onChange={(e) => setPwd(e.target.value)}
+            required
+            aria-invalid={validPwd ? "false" : "true"}
+            aria-describedby="pwdnote"
+            onFocus={() => setMatchFocus(true)}
+            onBlur={() => setMatchFocus(false)}
+          />
 
-            <p
-              id="pwdnote"
-              className={pwdFocus && !validPwd ? "instructions" : "offscreen"}
-            >
-              <InfoCircle />
-              8 to 24 characters. <br />
-              Must include uppercase and lowercase letters, a number and a
-              special character. <br />
-              Allowed special characters:{" "}
-              <span aria-label="exclamation mark">!</span>{" "}
-              <span aria-label="at symbol">@</span>{" "}
-              <span aria-label="hashtag">#</span>{" "}
-              <span aria-label="dollar sign">$</span>{" "}
-              <span aria-label="percent">%</span>
-            </p>
+          <p
+            id="pwdnote"
+            className={pwdFocus && !validPwd ? "instructions" : "offscreen"}
+          >
+            <InfoCircle />
+            8 to 24 characters. <br />
+            Must include uppercase and lowercase letters, a number and a
+            special character. <br />
+            Allowed special characters:{" "}
+            <span aria-label="exclamation mark">!</span>{" "}
+            <span aria-label="at symbol">@</span>{" "}
+            <span aria-label="hashtag">#</span>{" "}
+            <span aria-label="dollar sign">$</span>{" "}
+            <span aria-label="percent">%</span>
+          </p>
 
-            <label htmlFor="confirm_pwd">
-              Confirm Password:
-              <span className={validMatch && matchPwd ? "valid" : "hide"}>
-                <CheckCircleFill />
-              </span>
-              <span className={validMatch || !matchPwd ? "hide" : "invalid"}>
-                <XCircleFill />
-              </span>
-            </label>
-            <input
-              type="password"
-              id="confirm_pwd"
-              onChange={(e) => setMatchPwd(e.target.value)}
-              required
-              aria-invalid={validMatch ? "false" : "true"}
-              aria-describedby="confirmnote"
-              onFocus={() => setMatchFocus(true)}
-              onBlur={() => setMatchFocus(false)}
-            />
+          <label htmlFor="confirm_pwd">
+            Confirm Password:
+            <span className={validMatch && matchPwd ? "valid" : "hide"}>
+              <CheckCircleFill />
+            </span>
+            <span className={validMatch || !matchPwd ? "hide" : "invalid"}>
+              <XCircleFill />
+            </span>
+          </label>
+          <input
+            type="password"
+            id="confirm_pwd"
+            onChange={(e) => setMatchPwd(e.target.value)}
+            required
+            aria-invalid={validMatch ? "false" : "true"}
+            aria-describedby="confirmnote"
+            onFocus={() => setMatchFocus(true)}
+            onBlur={() => setMatchFocus(false)}
+          />
 
-            <p
-              id="confirmnote"
-              className={
-                matchFocus && !validMatch ? "instructions" : "offscreen"
-              }
-            >
-              <InfoCircle />
-              Must match the first password input field.
-            </p>
+          <p
+            id="confirmnote"
+            className={
+              matchFocus && !validMatch ? "instructions" : "offscreen"
+            }
+          >
+            <InfoCircle />
+            Must match the first password input field.
+          </p>
 
-            <button
-              disabled={!validName || !validPwd || !validMatch ? true : false}
-              onClick={handleSubmit}
-            >
-              Sign up
-            </button>
-          </form>
-          <p>Already signed up? <a href='#' onClick={handleVerification}>Login</a></p>
-        </section>
-      )}
+          <button
+            disabled={!validName || !validPwd || !validMatch ? true : false}
+            onClick={handleSubmit}
+          >
+            Sign up
+          </button>
+        </form>
+        <p>Already signed up? <a href='#' onClick={handleLogin}>Login</a></p>
+      </section>
     </>
   );
 }

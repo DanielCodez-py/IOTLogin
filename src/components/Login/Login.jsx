@@ -10,7 +10,7 @@ import {
 const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 const LOGIN_URL =  "https://industrialiot.onrender.com/api/login"
 
-export default function Login({handleRegistration}) {
+export default function Login({startLogin}) {
     const userRef = useRef();
     const errRef = useRef();
 
@@ -102,10 +102,10 @@ export default function Login({handleRegistration}) {
                         <input type="password" id="password" onChange={(e) => setPwd(e.target.value)} required />
 
                         <button disabled={!validEmail ? true : false} onClick={handleSubmit} >
-                            Sign up
+                            Login
                         </button>
                     </form>
-                    <p>Haven't registered yet? <a href='#' onClick={handleRegistration}>Register</a></p>
+                    <p>Haven't registered yet? <a href='#' onClick={startLogin}>Register</a></p>
                 </section>
             ) 
             }

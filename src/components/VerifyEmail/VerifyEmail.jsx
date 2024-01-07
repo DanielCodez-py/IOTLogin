@@ -8,7 +8,7 @@ import {
 
 const VERIFY_EMAIL_URL =  "https://industrialiot.onrender.com/api/verifyemail"
 
-export default function VerifyEmail({userEmail}) {
+export default function VerifyEmail({userEmail, startLogin}) {
     const userRef = useRef();
     const errRef = useRef();
 
@@ -26,7 +26,7 @@ export default function VerifyEmail({userEmail}) {
         }
         try {
         const response = await axios.post(VERIFY_EMAIL_URL,    
-            {"otp": userOTP, "email": userEmai},
+            {"otp": userOTP, "email": userEmail},
             {
             headers: {"Content-Type": "application/json"},
             }
@@ -39,10 +39,10 @@ export default function VerifyEmail({userEmail}) {
             if(!err?.response) {
             setErrMsg("No server response");
             } else if(err.response?.status === 400) {
-                setErrMsg("Bad request");
+                setErrMsg("Email does not exist");
                 // setErrMsg(err.response["msg"]);
-            } else if (err.response?.status === 403) {
-                setErrMsg("Email verification not complete");
+            } else if (err.response?.status === 409) {
+                setErrMsg("Email verification already completed");
             } else if (err.response?.status === 500) {
                 setErrMsg(err.response.error);
             } else {
@@ -58,6 +58,7 @@ export default function VerifyEmail({userEmail}) {
                 <section >
                     <h1>Congratulations!</h1>
                     <p>Registration is successful.</p>
+                    <a href='#' onClick={startLogin}>Login</a>
                 </section>
             ) : (
                 <section className="verifyEmailCard">
@@ -76,7 +77,6 @@ export default function VerifyEmail({userEmail}) {
                             Verify
                         </button>
                     </form>
-                    {/* <p>Haven't registered yet? <a href='#' onClick={handleRegistration}>Register</a></p> */}
                 </section>
             ) 
             }
