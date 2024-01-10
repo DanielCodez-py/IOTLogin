@@ -1,4 +1,5 @@
 import axios from "../../api/axios";
+import { Helmet } from "react-helmet";
 import {useRef, useState, useEffect} from 'react';
 import {
   InfoCircle,
@@ -54,6 +55,9 @@ export default function VerifyEmail({userEmail, startLogin}) {
 
     return (
         <>
+            <Helmet>
+                <title>IOT Login | Verify Email</title>
+            </Helmet>
             {success ? (
                 <section >
                     <h1>Congratulations!</h1>

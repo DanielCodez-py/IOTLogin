@@ -1,5 +1,6 @@
 import "../Login/Login.css";
 import axios from "../../api/axios";
+import { Helmet } from "react-helmet";
 import {useRef, useState, useEffect} from 'react';
 import {
   InfoCircle,
@@ -72,6 +73,9 @@ export default function Login({startLogin}) {
 
     return (
         <>
+            <Helmet>
+                <title>IOT Login | Login</title>
+            </Helmet>
             {success ? (
                 <section >
                     <h1>Login is successful!</h1>

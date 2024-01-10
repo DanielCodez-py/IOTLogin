@@ -1,4 +1,5 @@
 import axios from '../../api/axios';
+import { Helmet } from 'react-helmet';
 import VerifyEmail from '../VerifyEmail/VerifyEmail';
 import "./Register.css";
 import { useRef, useState, useEffect } from "react";
@@ -106,6 +107,9 @@ export default function Register({handleLogin, setToVerify, handleUserEmail}) {
 
   return (
     <>
+      <Helmet>
+        <title>IOT Login | Register</title>
+      </Helmet>
       <section className="signupCard">
         <p
           ref={errRef}
