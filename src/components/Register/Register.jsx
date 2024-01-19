@@ -203,8 +203,8 @@ export default function Register({handleLogin, setToVerify, handleUserEmail}) {
             required
             aria-invalid={validPwd ? "false" : "true"}
             aria-describedby="pwdnote"
-            onFocus={() => setMatchFocus(true)}
-            onBlur={() => setMatchFocus(false)}
+            onFocus={() => setPwdFocus(true)}
+            onBlur={() => setPwdFocus(false)}
           />
 
           <p
